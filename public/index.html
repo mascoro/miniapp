@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini App</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; }
+    button { padding: 10px 14px; border-radius: 8px; border: 0; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Telegram Mini App</h2>
+  <div class="card" id="info">Memuat data Telegram...</div>
+  <p><button id="ping">Ping Backend</button></p>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    tg?.expand();
+
+    const infoEl = document.getElementById('info');
+    const user = tg?.initDataUnsafe?.user;
+    infoEl.textContent = user
+      ? `Halo ${user.first_name} (@${user.username || '—'}) | id: ${user.id}`
+      : 'Buka dari dalam Telegram ya, bukan dari browser biasa.';
+
+    document.getElementById('ping').onclick = async () => {
+      const res = await fetch('/api/ping', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initData: tg?.initData || '' })
+      });
+      const data = await res.json();
+      alert(JSON.stringify(data));
+    };
+  </script>
+</body>
+</html>
