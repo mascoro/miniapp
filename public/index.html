@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mini App</title>
+  <title>Telegram Mini App</title>
   <style>
     body { font-family: system-ui, sans-serif; margin: 16px; }
     .card { border: 1px solid #ddd; border-radius: 12px; padding: 16px; }
@@ -26,6 +26,7 @@
       : 'Buka dari dalam Telegram ya, bukan dari browser biasa.';
 
     document.getElementById('ping').onclick = async () => {
+      // WAJIB: kirim tg.initData (BUKAN initDataUnsafe)
       const res = await fetch('/api/ping', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
